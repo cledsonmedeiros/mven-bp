@@ -1,26 +1,95 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <div class="d-flex align-center">
-      <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png" transition="scale-transition" width="40" />
+  <div>
+    <v-navigation-drawer app dark :mini-variant="estadoMenu" hide-overlay permanent :value="estadoMenu" class="primary">
+      <v-list dense nav class="py-1">
+        <v-list-item @click="navegarPara(item.rota)" v-for="item in itensMenu" :key="item.rota">
+          <v-list-item-icon>
+            <v-icon>{{ item.icone }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.titulo }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
 
-      <v-img alt="Vuetify Name" class="shrink mt-1 hidden-sm-and-down" contain min-width="100" src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png" width="100" />
-    </div>
+      <v-divider></v-divider>
 
-    <v-spacer></v-spacer>
-
-    <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-      <span class="mr-2">Latest Release</span>
-      <v-icon>mdi-open-in-new</v-icon>
-    </v-btn>
-  </v-app-bar>
+      <v-list dense nav class="py-1">
+        <v-list-item @click="refresh()">
+          <v-list-item-icon>
+            <v-icon>mdi-refresh</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Atualizar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-list-item @click="logout()">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Sair</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar app color="primary" dense dark>
+      <v-app-bar-nav-icon @click.stop="alterarMenu()"></v-app-bar-nav-icon>
+      <div class="d-flex align-center">
+        <span class="font-weight-bold">
+          MVEN
+          <span class="font-weight-light">BP</span>
+        </span>
+      </div>
+    </v-app-bar>
+  </div>
 </template>
 <script>
 export default {
   name: "Navbar",
   components: {},
   data() {
-    return {};
+    return {
+      itensMenu: [
+        { rota: "/", icone: "mdi-home", titulo: "Home" },
+      ]
+    };
   },
-  methods: {}
+  methods: {
+    navegarPara(rota) {
+      if (this.$route.path !== rota) {
+        this.$router.push(rota);
+        if (!this.estadoMenu && this.isMobile()) {
+          this.alterarMenu();
+        }
+      }
+    },
+    refresh() {
+      window.location.reload(true);
+    },
+    logout() {
+      localStorage.clear();
+      this.$router.push({ name: "Login" });
+    },
+    alterarMenu() {
+      this.$store.commit("alternarEstadoMenu");
+    },
+    isMobile() {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  computed: {
+    estadoMenu() {
+      return this.$store.state.estadoMenu;
+    }
+  }
 };
 </script>

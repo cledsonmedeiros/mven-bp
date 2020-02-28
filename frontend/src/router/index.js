@@ -6,13 +6,21 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
+    meta: {
+      titulo: "Home"
+    },
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
-  }
+  },
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeResolve((to, from, next) => {
+  document.title = `${to.meta.titulo} - ${process.env.VUE_APP_NAME}`;
+  next()
 })
 
 export default router

@@ -1,14 +1,27 @@
 import Vue from 'vue'
+import './plugins/axios'
 import App from './App.vue'
+import './registerServiceWorker'
 import router from './router'
+import store from './store'
 import vuetify from './plugins/vuetify';
-import 'roboto-fontface/css/roboto/roboto-fontface.css'
-import '@mdi/font/css/materialdesignicons.css'
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/index.css';
 
-Vue.config.productionTip = false
+Vue.use(VueToast, {
+  position: 'bottom',
+  duration: 2000
+})
 
-new Vue({
+Vue.config.productionTip = false;
+
+const vm = new Vue({
   router,
+  store,
   vuetify,
   render: h => h(App)
-}).$mount('#app')
+});
+
+window.onload = function () {
+  vm.$mount('#app');
+}

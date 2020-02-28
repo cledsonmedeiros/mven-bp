@@ -1,19 +1,26 @@
 <template>
-  <div class="home">
-    <Navbar></Navbar>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="text-center">
+    <h1 class="display-3">MVEN-BP</h1>
+    <h1 class="display-1">{{hoje}}</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
-import Navbar from '@/components/layout/Navbar.vue';
-
 export default {
-  name: 'home',
-  components: {
-    HelloWorld,
-    Navbar
-  }
-}
+  name: "Home",
+  data() {
+    return {
+      hoje: ""
+    }
+  },
+  created() {
+    this.$axios.get('util/datahora').then(response => {
+      this.hoje = response.data.datahora.full;
+      this.$toast.success('Hello World');
+    })
+  },
+  methods: {
+    
+  },
+};
 </script>
