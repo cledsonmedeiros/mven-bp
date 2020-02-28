@@ -11,16 +11,16 @@ export default {
   data() {
     return {
       hoje: ""
-    }
+    };
   },
   created() {
-    this.$axios.get('util/datahora').then(response => {
-      this.hoje = response.data.datahora.full;
-      this.$toast.success('Hello World');
-    })
+    setInterval(() => {
+      this.$axios.get("util/datahora").then(response => {
+        this.hoje = response.data.datahora.full;
+      });
+    }, 1 * 1000);
+    this.$toast.success("Hello World");
   },
-  methods: {
-    
-  },
+  methods: {}
 };
 </script>
