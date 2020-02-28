@@ -2,7 +2,7 @@ require('dotenv/config');
 const mongoose = require('mongoose');
 const app = require('./app');
 
-const { PORT, DB_URL, ENV } = process.env;
+const { PORT, DB_URL, ENV, APP_NAME } = process.env;
 
 mongoose.connect(DB_URL,
   {
@@ -16,6 +16,7 @@ mongoose.connect(DB_URL,
     app.listen(PORT || 3000, () => {
       console.log(`Servidor rodando em: http://localhost:${PORT}`);
       console.log(`Ambiente: ${ENV}`);
+      console.log(`Aplicação: ${APP_NAME}`);
     });
   },
 );
